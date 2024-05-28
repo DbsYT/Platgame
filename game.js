@@ -1,5 +1,4 @@
-// Enhanced game.js
-
+// game.js
 const canvas = document.getElementById('gameCanvas');
 const context = canvas.getContext('2d');
 
@@ -32,7 +31,7 @@ const platforms = [
 ];
 
 const enemies = [
-    { x: 300, y: 550, width: 50, height: 30, color: 'blue', dx: 2 }
+    { x: 300, y: 520, width: 50, height: 30, color: 'blue', dx: 2 }
 ];
 
 let gameState = 'running';
@@ -132,5 +131,28 @@ function handleKeyDown(event) {
 }
 
 function handleKeyUp(event) {
-    if (event.key === 'ArrowLeft') keys.left = false
+    if (event.key === 'ArrowLeft') keys.left = false;
+    if (event.key === 'ArrowRight') keys.right = false;
+}
 
+function update() {
+    if (gameState === 'running') {
+        clearCanvas();
+        drawPlayer();
+        drawPlatforms();
+        drawEnemies();
+        movePlayer();
+        updatePlayer();
+        updateEnemies();
+    } else if (gameState === 'gameOver') {
+        context.fillStyle = 'white';
+        context.font = '48px sans-serif';
+        context.fillText('Game Over', 300, 300);
+    }
+    requestAnimationFrame(update);
+}
+
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
+
+update();
